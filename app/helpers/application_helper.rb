@@ -220,15 +220,20 @@ module ApplicationHelper
   end
 
   def format_note(note)
-    note = auto_link_message(note)
-    note = markdown(note)
-    note = auto_link(note, :link => :urls)
+    unless note.nil? {
+      note = auto_link_message(note)
+      note = markdown(note)
+      note = auto_link(note, :link => :urls)
 
-    # add onenote and message protocols
-    Sanitize::Config::RELAXED[:protocols]['a']['href'] << 'onenote'
-    Sanitize::Config::RELAXED[:protocols]['a']['href'] << 'message'
+      # add onenote and message protocols
+      Sanitize::Config::RELAXED[:protocols]['a']['href'] << 'onenote'
+      Sanitize::Config::RELAXED[:protocols]['a']['href'] << 'message'
 
-    note = Sanitize.clean(note, Sanitize::Config::RELAXED)
+      note = Sanitize.clean(note, Sanitize::Config::RELAXED)
+    }
+    else
+      note=""
+    end
     return note
   end
 
